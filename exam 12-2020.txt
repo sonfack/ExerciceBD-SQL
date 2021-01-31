@@ -1,0 +1,72 @@
+CREATE TABLE ville (
+    id INT NOT NULL,
+    nom VARCHAR(10),
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE logement (
+    id INT NOT NULL,
+    nom VARCHAR(10),
+    cout INT,
+    idville INT NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (idville) REFERENCES ville(id)
+);
+
+CREATE TABLE locataire (
+    id INT NOT NULL,
+    nom VARCHAR(10),
+    age INT,
+    idlogement INT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (idlogement) REFERENCES logement(id)
+);
+
+
+
+
+INSERT INTO ville VALUES (1, 'Tarbes');
+INSERT INTO ville VALUES (2, 'Pau'); 
+INSERT INTO ville VALUES (3, 'Paris');
+
+
+
+INSERT INTO logement VALUES (1, 'log1', 200, 3);
+INSERT INTO logement VALUES (2, 'log2', 400, 2);
+INSERT INTO logement VALUES (3, 'log3', 100, 1); 
+INSERT INTO logement VALUES (4, 'log4', 300, 1);
+
+
+INSERT INTO locataire VALUES (1, 'thierry', 19, 1);
+INSERT INTO locataire VALUES (2, 'rodrigue', 21, 3);
+INSERT INTO locataire VALUES (3, 'tina', 24, 2);
+INSERT INTO locataire VALUES (4, 'jean', 20, null);
+INSERT INTO locataire VALUES (5, 'adrian', 18, null);
+
+
+
+1. Les logments de la ville de Tarbes
+SELECT logement.nom, cout 
+FROM logement
+where idville IN ( SELECT id 
+                 FROM ville 
+                 WHERE nom = 'Tarbes');
+
+SELECT ville.nom, logement.nom, cout
+FROM logement
+JOIN ville on ville.id = logement.idville
+WHERE ville.nom = 'Tarbes';
+
+SELECT ville.nom, logement.nom, cout 
+FROM logement, ville
+where idville = ville.id AND ville.nom = 'Tarbes';
+
+
+2. 
+SELECT COUNT(*) 
+FROM logement;
+
+3. Affichez id, nom, et age des locataire qui ont plus de 20 ans.
+SELECT * 
+FROM locataire
+WHERE age >= 20 ;
